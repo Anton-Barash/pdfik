@@ -89,6 +89,16 @@ class EnglishStrings extends AppStrings {
   String get promptDestinationFolder => 'Path to the folder for the result: ';
 
   @override
+  String get folderPickerTitleSource => 'Select the folder with PDF files';
+
+  @override
+  String get folderPickerTitleDestination => 'Select the folder for the result';
+
+  @override
+  String get infoFolderDialogOpening =>
+      'Opening the folder selection window...';
+
+  @override
   String infoSourceSelected(String path) => 'Source: $path';
 
   @override

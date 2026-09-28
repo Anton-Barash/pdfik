@@ -2,6 +2,7 @@
 library;
 
 export 'src/cli/console_menu.dart' show ConsoleMenu;
+export 'src/cli/folder_picker.dart' show FolderPicker;
 export 'src/cli/merge_flow.dart' show runMerge;
 export 'src/cli/pdfik_runner.dart' show runPdfik;
 export 'src/l10n/app_language.dart' show AppLanguage;

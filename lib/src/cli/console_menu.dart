@@ -4,6 +4,7 @@ import '../l10n/app_language.dart';
 import '../l10n/app_strings.dart';
 import '../services/pdf_merger_service.dart';
 import 'console_input.dart';
+import 'folder_picker.dart';
 import 'merge_flow.dart';
 
 /// Interactive text menu: language, source folder, destination folder, merge.
@@ -11,11 +12,14 @@ class ConsoleMenu {
   ConsoleMenu({
     required AppLanguage language,
     PdfMergerService service = const PdfMergerService(),
+    FolderPicker picker = const FolderPicker(),
   })  : _strings = AppStrings.of(language),
-        _service = service;
+        _service = service,
+        _picker = picker;
 
   AppStrings _strings;
   final PdfMergerService _service;
+  final FolderPicker _picker;
 
   String? _sourceFolder;
   String? _destinationFolder;
@@ -38,10 +42,10 @@ class ConsoleMenu {
           _selectLanguage();
           break;
         case '2':
-          _selectSourceFolder();
+          await _selectSourceFolder();
           break;
         case '3':
-          _selectDestinationFolder();
+          await _selectDestinationFolder();
           break;
         case '4':
           await _merge();
@@ -113,11 +117,13 @@ class ConsoleMenu {
     }
   }
 
-  void _selectSourceFolder() {
-    stdout.write(_strings.promptSourceFolder);
-
-    final String path = cleanPath(readLineOrNull());
-    if (path.isEmpty) return;
+  Future<void> _selectSourceFolder() async {
+    final String? path = await _askFolder(
+      prompt: _strings.promptSourceFolder,
+      title: _strings.folderPickerTitleSource,
+      initialDirectory: _sourceFolder ?? _destinationFolder,
+    );
+    if (path == null || path.isEmpty) return;
 
     if (!Directory(path).existsSync()) {
       stdout.writeln(_strings.errorFolderNotFound(path));
@@ -131,14 +137,37 @@ class ConsoleMenu {
     _destinationFolder ??= defaultDestinationFolder(path);
   }
 
-  void _selectDestinationFolder() {
-    stdout.write(_strings.promptDestinationFolder);
-
-    final String path = cleanPath(readLineOrNull());
-    if (path.isEmpty) return;
+  Future<void> _selectDestinationFolder() async {
+    final String? path = await _askFolder(
+      prompt: _strings.promptDestinationFolder,
+      title: _strings.folderPickerTitleDestination,
+      initialDirectory: _destinationFolder ?? _sourceFolder,
+    );
+    if (path == null || path.isEmpty) return;
 
     _destinationFolder = path;
     stdout.writeln(_strings.infoDestinationSelected(path));
+  }
+
+  /// Shows the native dialog when available, otherwise asks for a typed path.
+  ///
+  /// Returns `null` when the user cancels the dialog or enters nothing.
+  Future<String?> _askFolder({
+    required String prompt,
+    required String title,
+    String? initialDirectory,
+  }) async {
+    if (_picker.isSupported) {
+      stdout.writeln(_strings.infoFolderDialogOpening);
+      final String? picked = await _picker.pick(
+        title: title,
+        initialDirectory: initialDirectory,
+      );
+      return picked;
+    }
+
+    stdout.write(prompt);
+    return cleanPath(readLineOrNull());
   }
 
   Future<void> _merge() async {

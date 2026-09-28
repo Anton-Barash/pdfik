@@ -89,6 +89,15 @@ class RussianStrings extends AppStrings {
   String get promptDestinationFolder => 'Путь к папке для результата: ';
 
   @override
+  String get folderPickerTitleSource => 'Выберите папку с PDF-файлами';
+
+  @override
+  String get folderPickerTitleDestination => 'Выберите папку для результата';
+
+  @override
+  String get infoFolderDialogOpening => 'Открывается окно выбора папки...';
+
+  @override
   String infoSourceSelected(String path) => 'Источник: $path';
 
   @override

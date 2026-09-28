@@ -83,11 +83,20 @@ abstract class AppStrings {
   /// Confirmation that the language was switched.
   String infoLanguageChanged(String name);
 
-  /// Prompt asking for the source folder path.
+  /// Prompt asking for the source folder path (used when no dialog is available).
   String get promptSourceFolder;
 
-  /// Prompt asking for the destination folder path.
+  /// Prompt asking for the destination folder path (used without a dialog).
   String get promptDestinationFolder;
+
+  /// Title of the native folder dialog for the source folder.
+  String get folderPickerTitleSource;
+
+  /// Title of the native folder dialog for the destination folder.
+  String get folderPickerTitleDestination;
+
+  /// Hint printed while the native folder dialog is open.
+  String get infoFolderDialogOpening;
 
   /// Confirmation that the source folder was selected.
   String infoSourceSelected(String path);

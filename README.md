@@ -29,6 +29,9 @@ dart run bin/main.dart
 При выборе папки-источника папка назначения подставляется автоматически
 как `<источник>/out`, но её можно изменить пунктом 3.
 
+На Windows пункты 2 и 3 открывают системное окно выбора папки
+(PowerShell + WinForms); на других платформах путь вводится вручную.
+
 ## Запуск без меню (для скриптов)
 
 ```
@@ -73,7 +76,8 @@ dart run bin/main.dart --lang en "C:\folder" # non-interactive
 ```
 
 With no arguments an interactive menu opens: interface language (ru / zh / en),
-source folder and destination folder.
+source folder and destination folder. On Windows items 2 and 3 open a native
+folder dialog; on other platforms the path is typed manually.
 
 ---
 
@@ -89,6 +93,7 @@ dart run bin/main.dart --lang zh "C:\文件夹"  # 无菜单模式
 ```
 
 不带参数时打开交互式菜单：界面语言（ru / zh / en）、源文件夹、目标文件夹。
+在 Windows 上第 2、3 项会打开系统文件夹选择窗口；其他平台手动输入路径。
 
 ## Требования / Requirements
 

@@ -88,6 +88,15 @@ class ChineseStrings extends AppStrings {
   String get promptDestinationFolder => '请输入保存结果的目标文件夹路径: ';
 
   @override
+  String get folderPickerTitleSource => '选择包含 PDF 的文件夹';
+
+  @override
+  String get folderPickerTitleDestination => '选择保存结果的目标文件夹';
+
+  @override
+  String get infoFolderDialogOpening => '正在打开文件夹选择窗口...';
+
+  @override
   String infoSourceSelected(String path) => '源文件夹：$path';
 
   @override
