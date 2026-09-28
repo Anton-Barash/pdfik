@@ -4,11 +4,15 @@ import 'dart:typed_data';
 import 'package:path/path.dart' as p;
 import 'package:pdf_document/pdf_document.dart';
 
-/// Name of the merged output file created inside the output directory.
+/// Name of the merged output file created inside the destination directory.
 const String kMergedFileName = 'merged_all.pdf';
 
-/// Name of the output sub-directory created inside the source folder.
+/// Suggested destination sub-directory created inside the source folder.
 const String kOutputDirName = 'out';
+
+/// Suggested destination folder for a given [sourceFolder].
+String defaultDestinationFolder(String sourceFolder) =>
+    p.join(sourceFolder, kOutputDirName);
 
 /// A PDF file that could not be read.
 class PdfReadFailure {
@@ -54,13 +58,21 @@ class PdfMergeResult {
 class PdfMergerService {
   const PdfMergerService();
 
-  /// Returns every `.pdf` file under [folder], sorted by full path.
+  /// Returns every `.pdf` file under [sourceFolder], sorted by full path.
   ///
-  /// The output directory written by a previous run is skipped so repeated
-  /// runs do not merge their own result back into the output.
-  List<String> discoverPdfFiles(String folder) {
-    final Directory root = Directory(folder);
-    final String outputDir = p.canonicalize(p.join(folder, kOutputDirName));
+  /// Files inside [excludeDirectory] and the file at [excludeFile] are skipped,
+  /// so a previous result is never merged into the next one when the source
+  /// and destination folders overlap.
+  List<String> discoverPdfFiles(
+    String sourceFolder, {
+    String? excludeDirectory,
+    String? excludeFile,
+  }) {
+    final Directory root = Directory(sourceFolder);
+    final String? excludedDir =
+        excludeDirectory == null ? null : p.canonicalize(excludeDirectory);
+    final String? excludedFile =
+        excludeFile == null ? null : p.canonicalize(excludeFile);
     final List<String> files = <String>[];
 
     for (final FileSystemEntity entity
@@ -69,7 +81,8 @@ class PdfMergerService {
       if (p.extension(entity.path).toLowerCase() != '.pdf') continue;
 
       final String canonical = p.canonicalize(entity.path);
-      if (p.isWithin(outputDir, canonical)) continue;
+      if (excludedDir != null && p.isWithin(excludedDir, canonical)) continue;
+      if (excludedFile != null && canonical == excludedFile) continue;
 
       files.add(canonical);
     }
@@ -78,14 +91,16 @@ class PdfMergerService {
     return files;
   }
 
-  /// Reads [filePaths] in order and merges them into `<folder>/out/merged_all.pdf`.
+  /// Reads [filePaths] in order and merges them into
+  /// `<outputDirectory>/<outputFileName>`.
   ///
   /// [onRead] is called before each file is read, allowing the caller to
   /// report progress. Files that cannot be read are collected in
   /// [PdfMergeResult.failures] instead of aborting the whole run.
-  Future<PdfMergeResult> merge(
-    String folder,
-    List<String> filePaths, {
+  Future<PdfMergeResult> merge({
+    required List<String> filePaths,
+    required String outputDirectory,
+    String outputFileName = kMergedFileName,
     void Function(int index, int total, String path)? onRead,
   }) async {
     final List<Uint8List> inputs = <Uint8List>[];
@@ -101,8 +116,8 @@ class PdfMergerService {
       }
     }
 
-    final Directory outputDir = Directory(p.join(folder, kOutputDirName));
-    final File outputFile = File(p.join(outputDir.path, kMergedFileName));
+    final Directory outputDir = Directory(outputDirectory);
+    final File outputFile = File(p.join(outputDir.path, outputFileName));
 
     if (inputs.isEmpty) {
       return PdfMergeResult(

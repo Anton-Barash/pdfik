@@ -11,21 +11,107 @@ class EnglishStrings extends AppStrings {
   String get helpText =>
       'Usage: pdfik [--lang ru|zh|en] [folder]\n'
       '\n'
-      'Merges every PDF file in the given folder (including subfolders)\n'
-      'into a single file out/merged_all.pdf.\n'
+      'With no arguments an interactive menu opens: choose the language,\n'
+      'the source folder and the destination folder.\n'
+      '\n'
+      'With arguments the menu is skipped: every PDF file in the given folder\n'
+      '(including subfolders) is merged into out/merged_all.pdf.\n'
       '\n'
       'Options:\n'
       '  -l, --lang <code>   Message language: ru, zh, or en\n'
       '  -h, --help          Show this help\n'
       '\n'
-      'When no folder is given, the path is requested interactively.\n'
       'The PDFIK_LANG environment variable sets the default language.';
 
   @override
-  String get promptFolderPath => 'Enter the path to the PDF folder: ';
+  String get languageName => 'English';
+
+  // --- Interactive menu -----------------------------------------------------
 
   @override
-  String get errorPathNotProvided => 'No path provided. Exiting.';
+  String get menuTitle => 'Menu';
+
+  @override
+  String get menuOptionLanguage => 'Interface language';
+
+  @override
+  String get menuOptionSource => 'Source folder';
+
+  @override
+  String get menuOptionDestination => 'Destination folder';
+
+  @override
+  String get menuOptionMerge => 'Merge PDFs';
+
+  @override
+  String get menuOptionExit => 'Exit';
+
+  @override
+  String get menuPromptChoice => 'Select an item: ';
+
+  @override
+  String menuInvalidChoice(String value) => 'Unknown item: $value';
+
+  @override
+  String get menuLabelLanguage => 'Language';
+
+  @override
+  String get menuLabelSource => 'Source';
+
+  @override
+  String get menuLabelDestination => 'Destination';
+
+  @override
+  String get menuNotSet => 'not set';
+
+  @override
+  String get languageMenuTitle => 'Choose language';
+
+  @override
+  String get languageOptionRussian => 'Русский';
+
+  @override
+  String get languageOptionChinese => '中文';
+
+  @override
+  String get languageOptionEnglish => 'English';
+
+  @override
+  String get languageOptionBack => 'Back';
+
+  @override
+  String infoLanguageChanged(String name) => 'Language changed: $name';
+
+  @override
+  String get promptSourceFolder => 'Path to the folder with PDF files: ';
+
+  @override
+  String get promptDestinationFolder => 'Path to the folder for the result: ';
+
+  @override
+  String infoSourceSelected(String path) => 'Source: $path';
+
+  @override
+  String infoDestinationSelected(String path) => 'Destination: $path';
+
+  @override
+  String get errorSourceNotSet => 'Select the source folder first (item 2).';
+
+  @override
+  String get errorDestinationNotSet =>
+      'Select the destination folder first (item 3).';
+
+  @override
+  String errorDestinationCreate(String path, Object error) =>
+      'Could not create destination folder $path: $error';
+
+  @override
+  String get pressEnterToContinue => 'Press Enter to return to the menu...';
+
+  @override
+  String get menuGoodbye => 'Exiting. Goodbye!';
+
+  // --- Non-interactive CLI --------------------------------------------------
 
   @override
   String errorFolderNotFound(String path) => 'Error: folder not found: $path';

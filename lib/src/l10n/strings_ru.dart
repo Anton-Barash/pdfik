@@ -11,21 +11,108 @@ class RussianStrings extends AppStrings {
   String get helpText =>
       'Использование: pdfik [--lang ru|zh|en] [папка]\n'
       '\n'
-      'Объединяет все PDF-файлы из указанной папки (включая подпапки)\n'
-      'в один файл out/merged_all.pdf.\n'
+      'Без аргументов открывается интерактивное меню: выбор языка,\n'
+      'папки-источника и папки назначения.\n'
+      '\n'
+      'С аргументами программа работает без меню: объединяет все PDF-файлы\n'
+      'из указанной папки (включая подпапки) в out/merged_all.pdf.\n'
       '\n'
       'Параметры:\n'
       '  -l, --lang <код>   Язык сообщений: ru, zh или en\n'
       '  -h, --help         Показать эту справку\n'
       '\n'
-      'Если папка не указана, путь будет запрошен интерактивно.\n'
       'Переменная окружения PDFIK_LANG задаёт язык по умолчанию.';
 
   @override
-  String get promptFolderPath => 'Введите путь к папке с PDF: ';
+  String get languageName => 'Русский';
+
+  // --- Interactive menu -----------------------------------------------------
 
   @override
-  String get errorPathNotProvided => 'Путь не указан. Завершение работы.';
+  String get menuTitle => 'Меню';
+
+  @override
+  String get menuOptionLanguage => 'Язык интерфейса';
+
+  @override
+  String get menuOptionSource => 'Папка-источник';
+
+  @override
+  String get menuOptionDestination => 'Папка назначения';
+
+  @override
+  String get menuOptionMerge => 'Объединить PDF';
+
+  @override
+  String get menuOptionExit => 'Выход';
+
+  @override
+  String get menuPromptChoice => 'Выберите пункт: ';
+
+  @override
+  String menuInvalidChoice(String value) => 'Неизвестный пункт: $value';
+
+  @override
+  String get menuLabelLanguage => 'Язык';
+
+  @override
+  String get menuLabelSource => 'Источник';
+
+  @override
+  String get menuLabelDestination => 'Назначение';
+
+  @override
+  String get menuNotSet => 'не задано';
+
+  @override
+  String get languageMenuTitle => 'Выбор языка';
+
+  @override
+  String get languageOptionRussian => 'Русский';
+
+  @override
+  String get languageOptionChinese => '中文';
+
+  @override
+  String get languageOptionEnglish => 'English';
+
+  @override
+  String get languageOptionBack => 'Назад';
+
+  @override
+  String infoLanguageChanged(String name) => 'Язык изменён: $name';
+
+  @override
+  String get promptSourceFolder => 'Путь к папке с PDF-файлами: ';
+
+  @override
+  String get promptDestinationFolder => 'Путь к папке для результата: ';
+
+  @override
+  String infoSourceSelected(String path) => 'Источник: $path';
+
+  @override
+  String infoDestinationSelected(String path) => 'Назначение: $path';
+
+  @override
+  String get errorSourceNotSet =>
+      'Сначала выберите папку-источник (пункт 2).';
+
+  @override
+  String get errorDestinationNotSet =>
+      'Сначала выберите папку назначения (пункт 3).';
+
+  @override
+  String errorDestinationCreate(String path, Object error) =>
+      'Не удалось создать папку назначения $path: $error';
+
+  @override
+  String get pressEnterToContinue => 'Нажмите Enter для возврата в меню...';
+
+  @override
+  String get menuGoodbye => 'Выход. До свидания!';
+
+  // --- Non-interactive CLI --------------------------------------------------
 
   @override
   String errorFolderNotFound(String path) =>

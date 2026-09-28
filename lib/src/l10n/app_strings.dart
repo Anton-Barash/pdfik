@@ -24,11 +24,93 @@ abstract class AppStrings {
   /// Usage instructions shown for `--help`.
   String get helpText;
 
-  /// Interactive prompt asking for the folder path.
-  String get promptFolderPath;
+  /// Name of the currently active language, written in that language.
+  String get languageName;
 
-  /// The user submitted an empty path.
-  String get errorPathNotProvided;
+  // --- Interactive menu -----------------------------------------------------
+
+  /// Heading of the main menu.
+  String get menuTitle;
+
+  /// Main menu entry: change the interface language.
+  String get menuOptionLanguage;
+
+  /// Main menu entry: select the source folder.
+  String get menuOptionSource;
+
+  /// Main menu entry: select the destination folder.
+  String get menuOptionDestination;
+
+  /// Main menu entry: start merging.
+  String get menuOptionMerge;
+
+  /// Main menu entry: quit.
+  String get menuOptionExit;
+
+  /// Prompt asking for a menu item number.
+  String get menuPromptChoice;
+
+  /// The entered menu item is unknown.
+  String menuInvalidChoice(String value);
+
+  /// Label for the current language in the menu status block.
+  String get menuLabelLanguage;
+
+  /// Label for the source folder in the menu status block.
+  String get menuLabelSource;
+
+  /// Label for the destination folder in the menu status block.
+  String get menuLabelDestination;
+
+  /// Shown when a folder has not been selected yet.
+  String get menuNotSet;
+
+  /// Heading of the language sub-menu.
+  String get languageMenuTitle;
+
+  /// Language sub-menu entry for Russian.
+  String get languageOptionRussian;
+
+  /// Language sub-menu entry for Chinese.
+  String get languageOptionChinese;
+
+  /// Language sub-menu entry for English.
+  String get languageOptionEnglish;
+
+  /// Sub-menu entry returning to the main menu.
+  String get languageOptionBack;
+
+  /// Confirmation that the language was switched.
+  String infoLanguageChanged(String name);
+
+  /// Prompt asking for the source folder path.
+  String get promptSourceFolder;
+
+  /// Prompt asking for the destination folder path.
+  String get promptDestinationFolder;
+
+  /// Confirmation that the source folder was selected.
+  String infoSourceSelected(String path);
+
+  /// Confirmation that the destination folder was selected.
+  String infoDestinationSelected(String path);
+
+  /// Merge was requested without a source folder.
+  String get errorSourceNotSet;
+
+  /// Merge was requested without a destination folder.
+  String get errorDestinationNotSet;
+
+  /// The destination folder could not be created.
+  String errorDestinationCreate(String path, Object error);
+
+  /// Prompt shown after an action so the user can read the output.
+  String get pressEnterToContinue;
+
+  /// Farewell message when leaving the menu.
+  String get menuGoodbye;
+
+  // --- Non-interactive CLI --------------------------------------------------
 
   /// The requested folder does not exist.
   String errorFolderNotFound(String path);
